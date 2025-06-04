@@ -1,10 +1,14 @@
 package co.com.pragma.config;
 
+import co.com.pragma.model.tournament.gateways.*;
+import co.com.pragma.model.view.gateways.ViewRepository;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class UseCasesConfigTest {
@@ -31,14 +35,30 @@ public class UseCasesConfigTest {
     static class TestConfig {
 
         @Bean
-        public MyUseCase myUseCase() {
-            return new MyUseCase();
+        public TournamentRepository tournamentRepository(){
+            return Mockito.mock(TournamentRepository.class);
+        }
+        @Bean
+        public CategoryRepository categoryRepository(){
+            return Mockito.mock(CategoryRepository.class);
+        }
+        @Bean
+        public UserRepository userRepository(){
+            return Mockito.mock(UserRepository.class);
+        }
+        @Bean
+        public PlataformGateway plataformGateway(){
+            return Mockito.mock(PlataformGateway.class);
+        }
+        @Bean
+        public VideoGameGateway videoGameGateway(){
+            return Mockito.mock(VideoGameGateway.class);
+        }
+
+        @Bean
+        public ViewRepository viewRepository(){
+            return Mockito.mock(ViewRepository.class);
         }
     }
 
-    static class MyUseCase {
-        public String execute() {
-            return "MyUseCase Test";
-        }
-    }
 }
