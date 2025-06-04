@@ -1,11 +1,13 @@
 package co.com.pragma.api.mapper;
 
-import co.com.pragma.api.dto.TournamentRequestDto;
-import co.com.pragma.api.dto.TournamentResponseDto;
+import co.com.pragma.api.dto.tournament.TournamentRequestDto;
+import co.com.pragma.api.dto.tournament.TournamentResponseDto;
 import co.com.pragma.model.tournament.Tournament;
+import lombok.experimental.UtilityClass;
 
 import java.util.UUID;
 
+@UtilityClass
 public class TournamentDtoMapper {
     public static Tournament tournamentDtoToTournament(TournamentRequestDto tournamentDto) {
         return Tournament.builder()
@@ -13,7 +15,6 @@ public class TournamentDtoMapper {
                 .description(tournamentDto.getDescription())
                 .startDate(tournamentDto.getStartDate())
                 .endDate(tournamentDto.getEndDate())
-                .entrancePrice(tournamentDto.getEntrancePrice())
                 .organizer(tournamentDto.getOrganizer())
                 .category(tournamentDto.getCategory())
                 .uniqueCode(UUID.randomUUID().toString())
@@ -23,14 +24,12 @@ public class TournamentDtoMapper {
                 .build();
     }
 
-    public static TournamentResponseDto tournamentToTounamentDto(Tournament tournament) {
+    public static TournamentResponseDto tournamentToTournamentDto(Tournament tournament) {
         return TournamentResponseDto.builder()
                 .name(tournament.getName())
                 .description(tournament.getDescription())
                 .startDate(tournament.getStartDate())
                 .endDate(tournament.getEndDate())
-                .entrancePrice(tournament.getEntrancePrice())
-                .capacity(tournament.getCapacity())
                 .organizer(tournament.getOrganizer())
                 .category(tournament.getCategory())
                 .uniqueCode(tournament.getUniqueCode())

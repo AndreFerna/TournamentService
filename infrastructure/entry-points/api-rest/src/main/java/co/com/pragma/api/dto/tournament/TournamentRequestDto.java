@@ -1,4 +1,4 @@
-package co.com.pragma.api.dto;
+package co.com.pragma.api.dto.tournament;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
@@ -24,9 +24,6 @@ public class TournamentRequestDto {
     @NotNull
     @Schema(example = "2023-07-22T03:01:00")
     private String endDate;
-    @NotNull
-    @Schema(example = "10000")
-    private BigDecimal entrancePrice; //precio entrada
     @NotNull
     @Schema(example = "1193134338")
     private String organizer;

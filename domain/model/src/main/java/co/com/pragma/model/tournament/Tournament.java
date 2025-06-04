@@ -1,7 +1,6 @@
 package co.com.pragma.model.tournament;
-import lombok.*;
 
-import java.math.BigDecimal;
+import lombok.*;
 
 @Getter
 @Setter
@@ -16,8 +15,6 @@ public class Tournament{
     private String description;
     private String startDate;
     private String endDate;
-    private BigDecimal entrancePrice; //precio entrada
-    private Long capacity;
     private String organizer;
     private String category;
     private String uniqueCode;

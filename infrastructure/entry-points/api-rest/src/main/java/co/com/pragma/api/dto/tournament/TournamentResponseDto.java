@@ -1,4 +1,4 @@
-package co.com.pragma.api.dto;
+package co.com.pragma.api.dto.tournament;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -25,12 +25,6 @@ public class TournamentResponseDto {
     @NotNull
     @Schema(example = "2023-07-22T03:01:00")
     private String endDate;
-    @NotNull
-    @Schema(example = "10000")
-    private BigDecimal entrancePrice; //precio entrada
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    @Schema(example = "100")
-    private Long capacity;
     @NotNull
     @Schema(example = "1193134338")
     private String organizer;

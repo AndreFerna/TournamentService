@@ -1,11 +1,16 @@
 package co.com.pragma.api.controller;
 
 import co.com.pragma.api.dto.ResponseErrorDto;
-import co.com.pragma.api.dto.TournamentRequestDto;
-import co.com.pragma.api.dto.TournamentResponseDto;
+import co.com.pragma.api.dto.tournament.TournamentRequestDto;
+import co.com.pragma.api.dto.tournament.TournamentResponseDto;
+import co.com.pragma.api.dto.view.ViewRequestDto;
+import co.com.pragma.api.dto.view.ViewResponseDto;
 import co.com.pragma.api.mapper.TournamentDtoMapper;
+import co.com.pragma.api.mapper.ViewDtoMapper;
 import co.com.pragma.model.tournament.Tournament;
+import co.com.pragma.model.view.View;
 import co.com.pragma.usecase.tournament.TournamentUseCase;
+import co.com.pragma.usecase.view.ViewUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -27,6 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TournamentController {
 
     private final TournamentUseCase tournamentUseCase;
+    private final ViewUseCase viewUseCase;
 
     @Operation(summary = "Permite crear torneos gratuitos y pagos")
     @ApiResponses({
@@ -38,7 +44,19 @@ public class TournamentController {
     public TournamentResponseDto save(@RequestBody @Valid TournamentRequestDto tournamentDto) {
         Tournament tournament = TournamentDtoMapper.tournamentDtoToTournament(tournamentDto);
         tournament = tournamentUseCase.save(tournament);
-        return TournamentDtoMapper.tournamentToTounamentDto(tournament);
+        return TournamentDtoMapper.tournamentToTournamentDto(tournament);
+    }
+
+    @Operation(summary = "Permite crear vistas gratuitas y pagas")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Respuesta exitosa", content = {@Content(mediaType = "appliction/json", schema = @Schema(implementation = ViewResponseDto.class))}),
+            @ApiResponse(responseCode = "400", description = "Error en la solicitud", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ResponseErrorDto.class))}),
+            @ApiResponse(responseCode = "409", description = "Se presentan conflictos con los datos de la solicitud", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ResponseErrorDto.class))})
+    })
+    @PostMapping("/view")
+    public ViewResponseDto save(@RequestBody @Valid ViewRequestDto viewResponseDto) {
+        View view = ViewDtoMapper.viewDtoToView(viewResponseDto);
+        return ViewDtoMapper.viewToViewDto(viewUseCase.save(view));
     }
 
 }

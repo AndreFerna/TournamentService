@@ -3,7 +3,6 @@ package co.com.pragma.jpa.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Getter
@@ -25,13 +24,8 @@ public class TournamentEntity {
     private LocalDateTime startDate;
     @Column(name = "fecha_fin")
     private LocalDateTime endDate;
-    @Column(name = "precio")
-    private BigDecimal priceEntry;
-    private Long aforo;
-
     @Column(name = "organizador_id")
     private String organizerId;
-
     @Column(name = "categoria_id")
     private Long idCategory;
     @Column(name = "codigo_unico")

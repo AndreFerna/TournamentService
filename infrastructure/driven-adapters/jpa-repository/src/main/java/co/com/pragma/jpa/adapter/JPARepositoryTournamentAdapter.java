@@ -12,6 +12,7 @@ import org.reactivecommons.utils.ObjectMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.Objects;
+import java.util.Optional;
 
 @Repository
 public class JPARepositoryTournamentAdapter extends AdapterOperations<Tournament, TournamentEntity, Long, JPATournamentRepository>
@@ -34,6 +35,15 @@ public class JPARepositoryTournamentAdapter extends AdapterOperations<Tournament
     @Override
     public Integer countTournamentsOrganizer(String organizerId) {
         return repository.countTournamentsOrganizer(organizerId);
+    }
+
+    @Override
+    public Tournament findById(Long id) {
+        Optional<TournamentEntity> tournamentEntity = repository.findById(id);
+        if (tournamentEntity.isEmpty()) {
+            throw new PragmaException(ErrorCode.B409006);
+        }
+        return TournamentMapper.toDomain(tournamentEntity.get(), null);
     }
 
 }

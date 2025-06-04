@@ -22,14 +22,12 @@ public class TournamentUseCase {
         Category category = categoryRepository.findByAliasCategory(tournament.getCategory());
 
         validateExistsUser(tournament.getOrganizer());
-        validateFreeAndCapacity(tournament);
+        validateFree(tournament);
 
         Platform platform = plataformGateway.findByName(tournament.getPlatformName());
         VideoGame videoGame = videoGameGateway.findByName(tournament.getVideGameName());
 
-        Tournament tournamentSaved = tournamentRepository.saveTournament(tournament, category.getCategoryId(), platform.getId(), videoGame.getId());
-
-        return tournamentSaved;
+        return tournamentRepository.saveTournament(tournament, category.getCategoryId(), platform.getId(), videoGame.getId());
     }
 
     private void validateExistsUser(String organizerId) {
@@ -39,13 +37,12 @@ public class TournamentUseCase {
         }
     }
 
-    private void validateFreeAndCapacity(Tournament tournament) {
+    private void validateFree(Tournament tournament) {
         if (tournament.isFree()) {
             Integer numberTournament = tournamentRepository.countTournamentsOrganizer(tournament.getOrganizer());
             if (numberTournament > 1) {
                 throw new PragmaException(ErrorCode.B409003);
             }
-            tournament.setCapacity(100L);
         }
     }
 }
