@@ -17,6 +17,7 @@ public enum ErrorCode {
     B409009("B409-009", "Unsaved tournament", 409),
     B409010("B409-010", "platform does not exist", 409),
     B409011("B409-011", "Video game does not exist", 409),
+    SP503("S0503", "Service not available", 503),
     ;
 
     private final String code;

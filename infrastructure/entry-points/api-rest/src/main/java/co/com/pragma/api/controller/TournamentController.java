@@ -7,6 +7,8 @@ import co.com.pragma.api.dto.view.ViewRequestDto;
 import co.com.pragma.api.dto.view.ViewResponseDto;
 import co.com.pragma.api.mapper.TournamentDtoMapper;
 import co.com.pragma.api.mapper.ViewDtoMapper;
+import co.com.pragma.model.config.ErrorCode;
+import co.com.pragma.model.config.PragmaException;
 import co.com.pragma.model.tournament.Tournament;
 import co.com.pragma.model.view.View;
 import co.com.pragma.usecase.tournament.TournamentUseCase;
@@ -19,11 +21,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.boot.actuate.health.HealthComponent;
+import org.springframework.boot.actuate.health.HealthEndpoint;
+import org.springframework.boot.actuate.health.Status;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/api/tournament", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -31,8 +34,27 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Torneo", description = "Creacion de torneo y vistas")
 public class TournamentController {
 
+    private HealthEndpoint healthEndpoint;
     private final TournamentUseCase tournamentUseCase;
     private final ViewUseCase viewUseCase;
+
+    @Operation(
+            summary = "Verifica el estado del servicio",
+            description = "Este endpoint permite monitorear si el servicio está disponible.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "El servicio está activo"),
+            }
+    )
+    @RequestMapping(path = "/health", method = RequestMethod.HEAD)
+    public ResponseEntity<Void> health() {
+        HealthComponent healthComponent = healthEndpoint.health();
+
+        if (Status.UP.equals(healthComponent.getStatus())) {
+            return ResponseEntity.ok().build();
+        } else {
+            throw new PragmaException(ErrorCode.SP503);
+        }
+    }
 
     @Operation(summary = "Permite crear torneos gratuitos y pagos")
     @ApiResponses({
